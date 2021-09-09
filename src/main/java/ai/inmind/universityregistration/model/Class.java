@@ -22,9 +22,6 @@ public class Class {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "year", nullable = false)
-    private String year;
-
     @Column(name = "semester", nullable = false)
     private String semester;
 
@@ -59,6 +56,6 @@ public class Class {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, year, semester, day, session, instructor, course);
+        return Objects.hash(id, semester, day, session, instructor, course);
     }
 }

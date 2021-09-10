@@ -2,15 +2,22 @@ package ai.inmind.universityregistration.model.DTO;
 
 import ai.inmind.universityregistration.model.Class;
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@RequiredArgsConstructor
 public class ClassDTO {
+    @NonNull
     private Long id;
+    @NonNull
     private String semester;
+    @NonNull
     private String day;
+    @NonNull
     private Integer session;
     private InstructorDTO instructor = null;
     private CourseDTO course = null;
@@ -24,12 +31,5 @@ public class ClassDTO {
         this.instructor = new InstructorDTO(aClass.getInstructor().getId(), aClass.getInstructor().getFirstName(), aClass.getInstructor().getLastName());
         this.course = new CourseDTO(aClass.getCourse().getId(), aClass.getCourse().getName());
         aClass.getEnrolledStudents().forEach(enrolledStudent -> this.enrolledStudents.add(new StudentDTO(enrolledStudent.getId(), enrolledStudent.getFirstName(), enrolledStudent.getLastName())));
-    }
-
-    public ClassDTO(Long id, String semester, String day, Integer session) {
-        this.id = id;
-        this.semester = semester;
-        this.day = day;
-        this.session = session;
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentEnrollmentService {
@@ -39,9 +38,9 @@ public class StudentEnrollmentService {
     }
 
     private void checkEnrollment(Student student, Class enrollment, Course course, List<Class> classes, List<Course> courses) {
-        if (classes.contains(enrollment) && courses.contains(course)) throw new CannotEnrollException(student, enrollment, "Already Enrolled.");
-        if (!courses.containsAll(course.getPrerequisites())) throw new CannotEnrollException(student, enrollment, "Prerequisites not satisfied.");
+        if (classes.contains(enrollment) && courses.contains(course)) throw new CannotEnrollException(student, enrollment, "already enrolled");
+        if (!courses.containsAll(course.getPrerequisites())) throw new CannotEnrollException(student, enrollment, "prerequisites not satisfied");
         if (classes.stream().anyMatch((c) -> Objects.equals(c.getSemester(), enrollment.getSemester()) && Objects.equals(c.getDay(), enrollment.getDay()) && Objects.equals(c.getSession(), enrollment.getSession())))
-            throw new CannotEnrollException(student, enrollment, "Conflicting classes.");
+            throw new CannotEnrollException(student, enrollment, "classes are conflicting");
     }
 }

@@ -1,6 +1,7 @@
 package ai.inmind.universityregistration.model.DTO;
 
 import ai.inmind.universityregistration.model.Course;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +13,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CourseDTO {
     @NonNull
+    @ApiModelProperty(notes = "The database generated ID", required = true)
     private Long id;
     @NonNull
+    @ApiModelProperty(notes = "The course's name", required = true)
     private String name;
+    @ApiModelProperty(notes = "The course's prerequisites")
     private List<CourseDTO> prerequisites = new ArrayList<>();
+    @ApiModelProperty(notes = "The classes in which this course is given")
     private List<ClassDTO> classes = new ArrayList<>();
 
     public CourseDTO(Course course) {

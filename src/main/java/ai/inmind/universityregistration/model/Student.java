@@ -1,9 +1,7 @@
 package ai.inmind.universityregistration.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -13,19 +11,23 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "student")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @ApiModelProperty(notes = "The database generated ID", required = true)
     private Long id;
 
     @Column(name = "first_name", nullable = false)
+    @ApiModelProperty(notes = "The student's first name", required = true)
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
+    @ApiModelProperty(notes = "The student's last name", required = true)
     private String lastName;
 
     @ManyToMany
@@ -33,6 +35,7 @@ public class Student {
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "class_id"))
     @ToString.Exclude
+    @ApiModelProperty(notes = "A list of classes in which the student is enrolled")
     private List<Class> enrolledIn;
 
     @Override

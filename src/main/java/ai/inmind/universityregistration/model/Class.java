@@ -1,9 +1,7 @@
 package ai.inmind.universityregistration.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -13,30 +11,37 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "class")
 public class Class {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @ApiModelProperty(notes = "The database generated ID", required = true)
     private Long id;
 
     @Column(name = "semester", nullable = false)
+    @ApiModelProperty(notes = "The semester during which this class is given", required = true)
     private String semester;
 
     @Column(name = "day", nullable = false)
+    @ApiModelProperty(notes = "The day during which this class is given", required = true)
     private String day;
 
     @Column(name = "session", nullable = false)
+    @ApiModelProperty(notes = "The session during which this class is given", required = true)
     private Integer session;
 
     @ManyToOne
     @JoinColumn(name = "instructor_id", nullable = false)
+    @ApiModelProperty(notes = "The instructor who teach this class")
     private Instructor instructor;
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
+    @ApiModelProperty(notes = "The course taught in this class")
     private Course course;
 
     @ManyToMany
@@ -44,6 +49,7 @@ public class Class {
             joinColumns = @JoinColumn(name = "class_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     @ToString.Exclude
+    @ApiModelProperty(notes = "The students enrolled in this class")
     private List<Student> enrolledStudents;
 
     @Override

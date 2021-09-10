@@ -1,6 +1,7 @@
 package ai.inmind.universityregistration.controller;
 
 import ai.inmind.universityregistration.configuration.SwaggerConfig;
+import ai.inmind.universityregistration.helper.LocaleParam;
 import ai.inmind.universityregistration.model.Course;
 import ai.inmind.universityregistration.model.DTO.CourseDTO;
 import ai.inmind.universityregistration.service.impl.CourseServiceImpl;
@@ -37,19 +38,22 @@ public class CourseController {
 
     @ApiOperation(value = "Return a specific Course")
     @GetMapping("{id}")
-    public ResponseEntity<CourseDTO> getCourseById(@PathVariable("id") long id) {
+    public ResponseEntity<CourseDTO> getCourseById(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id) {
+        LocaleParam.setLocale(locale);
         return new ResponseEntity<>(new CourseDTO(courseService.getElementById(id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update a specific Course information")
     @PutMapping("{id}")
-    public ResponseEntity<CourseDTO> updateCourse(@PathVariable("id") long id, @RequestBody Course course) {
+    public ResponseEntity<CourseDTO> updateCourse(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id, @RequestBody Course course) {
+        LocaleParam.setLocale(locale);
         return new ResponseEntity<>(new CourseDTO(courseService.updateElement(id, course)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete a specific Course")
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteCourse(@PathVariable("id") long id) {
+    public ResponseEntity<String> deleteCourse(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id) {
+        LocaleParam.setLocale(locale);
         courseService.deleteElement(id);
         return new ResponseEntity<>("Course Deleted Successfully.", HttpStatus.OK);
     }

@@ -1,6 +1,8 @@
 package ai.inmind.universityregistration.controller;
 
 import ai.inmind.universityregistration.configuration.SwaggerConfig;
+import ai.inmind.universityregistration.helper.LocaleParam;
+import ai.inmind.universityregistration.helper.MessageBuilder;
 import ai.inmind.universityregistration.model.Class;
 import ai.inmind.universityregistration.model.DTO.ClassDTO;
 import ai.inmind.universityregistration.service.impl.ClassServiceImpl;
@@ -37,20 +39,23 @@ public class ClassController {
 
     @ApiOperation(value = "Return a specific Class")
     @GetMapping("{id}")
-    public ResponseEntity<ClassDTO> getClassById(@PathVariable("id") long id) {
+    public ResponseEntity<ClassDTO> getClassById(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id) {
+        LocaleParam.setLocale(locale);
         return new ResponseEntity<>(new ClassDTO(classService.getElementById(id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update a specific Class information")
     @PutMapping("{id}")
-    public ResponseEntity<ClassDTO> updateClass(@PathVariable("id") long id, @RequestBody Class classroom) {
+    public ResponseEntity<ClassDTO> updateClass(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id, @RequestBody Class classroom) {
+        LocaleParam.setLocale(locale);
         return new ResponseEntity<>(new ClassDTO(classService.updateElement(id, classroom)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete a specific Class")
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteClass(@PathVariable("id") long id) {
+    public ResponseEntity<String> deleteClass(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id) {
         classService.deleteElement(id);
-        return new ResponseEntity<>("Class Deleted Successfully.", HttpStatus.OK);
+        LocaleParam.setLocale(locale);
+        return new ResponseEntity<>(MessageBuilder.messageBuilder("class", "deleteMessage"), HttpStatus.OK);
     }
 }

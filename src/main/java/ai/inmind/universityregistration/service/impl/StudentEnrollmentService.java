@@ -22,25 +22,25 @@ public class StudentEnrollmentService {
 
     public Student enrollInClass(Long studentId, Long classId) {
         Student student = studentService.getElementById(studentId);
-        Class enrollment = classService.getElementById(classId);
+        Class aClass = classService.getElementById(classId);
 
-        Course course = enrollment.getCourse();
+        Course course = aClass.getCourse();
 
         List<Class> classes = student.getEnrolledIn();
         List<Course> courses = new ArrayList<>();
         classes.forEach((c) -> courses.add(c.getCourse()));
 
-        checkEnrollment(student, enrollment, course, classes, courses);
+        checkEnrollment(student, aClass, course, classes, courses);
 
-        classes.add(enrollment);
+        classes.add(aClass);
         student.setEnrolledIn(classes);
         return studentService.updateElement(studentId, student);
     }
 
-    private void checkEnrollment(Student student, Class enrollment, Course course, List<Class> classes, List<Course> courses) {
-        if (classes.contains(enrollment) && courses.contains(course)) throw new CannotEnrollException(student, enrollment, "already enrolled");
-        if (!courses.containsAll(course.getPrerequisites())) throw new CannotEnrollException(student, enrollment, "prerequisites not satisfied");
-        if (classes.stream().anyMatch((c) -> Objects.equals(c.getSemester(), enrollment.getSemester()) && Objects.equals(c.getDay(), enrollment.getDay()) && Objects.equals(c.getSession(), enrollment.getSession())))
-            throw new CannotEnrollException(student, enrollment, "classes are conflicting");
+    private void checkEnrollment(Student student, Class aClass, Course course, List<Class> classes, List<Course> courses) {
+        if (classes.contains(aClass) && courses.contains(course)) throw new CannotEnrollException(student.getId(), aClass.getId(), "cannotEnrollCause1");
+        if (!courses.containsAll(course.getPrerequisites())) throw new CannotEnrollException(student.getId(), aClass.getId(), "cannotEnrollCause2");
+        if (classes.stream().anyMatch((c) -> Objects.equals(c.getSemester(), aClass.getSemester()) && Objects.equals(c.getDay(), aClass.getDay()) && Objects.equals(c.getSession(), aClass.getSession())))
+            throw new CannotEnrollException(student.getId(), aClass.getId(), "cannotEnrollCause3");
     }
 }

@@ -1,7 +1,7 @@
 package ai.inmind.universityregistration.exception;
 
-import ai.inmind.universityregistration.model.Class;
-import ai.inmind.universityregistration.model.Student;
+import ai.inmind.universityregistration.configuration.LocalizationConfig;
+import ai.inmind.universityregistration.helper.LocaleParam;
 import lombok.Getter;
 
 @Getter
@@ -9,8 +9,11 @@ public class CannotEnrollException extends RuntimeException {
     private static final long serialVersionUID = 2L;
     private final String message;
 
-    public CannotEnrollException(Student student, Class aClass, String cause) {
-        super(String.format("Student of id=%s cannot enroll in Class of id=%s.", student.getId(), aClass.getId()), new Throwable(cause));
-        this.message = String.format("Student of id=%s cannot enroll in Class of id=%s, because %s.", student.getId(), aClass.getId(), cause);
+    public CannotEnrollException(Long studentId, Long classId, String cause) {
+        super(String.format(LocalizationConfig.messageSource().getMessage("cannotEnroll", null, LocaleParam.getLocale()), studentId, classId),
+                new Throwable(LocalizationConfig.messageSource().getMessage(cause, null, LocaleParam.getLocale())));
+
+        this.message = String.format(LocalizationConfig.messageSource().getMessage("cannotEnrollCauseMessage", null, LocaleParam.getLocale()),
+                studentId, classId, LocalizationConfig.messageSource().getMessage(cause, null, LocaleParam.getLocale()));
     }
 }

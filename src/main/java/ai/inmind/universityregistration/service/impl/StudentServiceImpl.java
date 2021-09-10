@@ -29,7 +29,7 @@ public class StudentServiceImpl implements CRUDService<Student, Long> {
     @Override
     public Student getElementById(Long id) {
         return studentRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Student", "Id", id));
+                new ResourceNotFoundException("student", "id", id));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class StudentServiceImpl implements CRUDService<Student, Long> {
     @Override
     public void deleteElement(Long id) {
         studentRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Student", "Id", id));
+                new ResourceNotFoundException("student", "id", id));
         studentRepository.deleteById(id);
     }
 }

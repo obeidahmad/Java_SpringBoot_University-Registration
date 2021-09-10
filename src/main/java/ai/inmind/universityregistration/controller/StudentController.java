@@ -2,6 +2,8 @@ package ai.inmind.universityregistration.controller;
 
 import ai.inmind.universityregistration.configuration.SwaggerConfig;
 import ai.inmind.universityregistration.exception.CannotEnrollException;
+import ai.inmind.universityregistration.helper.LocaleParam;
+import ai.inmind.universityregistration.helper.MessageBuilder;
 import ai.inmind.universityregistration.model.DTO.StudentDTO;
 import ai.inmind.universityregistration.model.Student;
 import ai.inmind.universityregistration.service.impl.StudentEnrollmentService;
@@ -46,26 +48,30 @@ public class StudentController {
 
     @ApiOperation(value = "Return a specific Student")
     @GetMapping("{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable("id") long id) {
+    public ResponseEntity<StudentDTO> getStudentById(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id) {
+        LocaleParam.setLocale(locale);
         return new ResponseEntity<>(new StudentDTO(studentService.getElementById(id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update a specific Student information")
     @PutMapping("{id}")
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable("id") long id, @RequestBody Student student) {
+    public ResponseEntity<StudentDTO> updateStudent(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id, @RequestBody Student student) {
+        LocaleParam.setLocale(locale);
         return new ResponseEntity<>(new StudentDTO(studentService.updateElement(id, student)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete a specific Student")
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable("id") long id) {
+    public ResponseEntity<String> deleteStudent(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id) {
+        LocaleParam.setLocale(locale);
         studentService.deleteElement(id);
-        return new ResponseEntity<>("Student Deleted Successfully.", HttpStatus.OK);
+        return new ResponseEntity<>(MessageBuilder.messageBuilder("student", "deleteMessage"), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Enroll a specific Student into a specific Class")
     @PutMapping("enroll")
-    public ResponseEntity<StudentDTO> enrollStudent(@RequestParam(name = "studentId") long studentId, @RequestParam(name = "classId") long classId) {
+    public ResponseEntity<StudentDTO> enrollStudent(@RequestHeader("Accept-Language") String locale, @RequestParam(name = "studentId") long studentId, @RequestParam(name = "classId") long classId) {
+        LocaleParam.setLocale(locale);
         return new ResponseEntity<>(new StudentDTO(studentEnrollmentService.enrollInClass(studentId, classId)), HttpStatus.OK);
     }
 }

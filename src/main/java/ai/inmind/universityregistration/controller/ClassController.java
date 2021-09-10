@@ -1,12 +1,14 @@
 package ai.inmind.universityregistration.controller;
 
 import ai.inmind.universityregistration.model.Class;
+import ai.inmind.universityregistration.model.DTO.ClassDTO;
 import ai.inmind.universityregistration.service.impl.ClassServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/classes")
@@ -23,18 +25,18 @@ public class ClassController {
     }
 
     @GetMapping
-    public List<Class> getAllClass() {
-        return classService.getAllElements();
+    public List<ClassDTO> getAllClass() {
+        return classService.getAllElements().stream().map(ClassDTO::new).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Class> getClassById(@PathVariable("id") long id) {
-        return new ResponseEntity<>(classService.getElementById(id), HttpStatus.OK);
+    public ResponseEntity<ClassDTO> getClassById(@PathVariable("id") long id) {
+        return new ResponseEntity<>(new ClassDTO(classService.getElementById(id)), HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Class> updateClass(@PathVariable("id") long id, @RequestBody Class classroom) {
-        return new ResponseEntity<>(classService.updateElement(id, classroom), HttpStatus.OK);
+    public ResponseEntity<ClassDTO> updateClass(@PathVariable("id") long id, @RequestBody Class classroom) {
+        return new ResponseEntity<>(new ClassDTO(classService.updateElement(id, classroom)), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")

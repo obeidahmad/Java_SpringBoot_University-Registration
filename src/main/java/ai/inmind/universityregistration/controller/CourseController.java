@@ -55,6 +55,6 @@ public class CourseController {
     public ResponseEntity<String> deleteCourse(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id) {
         LocaleParam.setLocale(locale);
         courseService.deleteElement(id);
-        return new ResponseEntity<>("Course Deleted Successfully.", HttpStatus.OK);
+        return new ResponseEntity<>(LocaleParam.getMessage("course") + " " + LocaleParam.getMessage("deleteMessage"), HttpStatus.OK);
     }
 }

@@ -1,8 +1,9 @@
 package ai.inmind.universityregistration.controller;
 
 import ai.inmind.universityregistration.configuration.SwaggerConfig;
+import ai.inmind.universityregistration.exception.CannotDropException;
+import ai.inmind.universityregistration.exception.CannotEnrollException;
 import ai.inmind.universityregistration.helper.LocaleParam;
-import ai.inmind.universityregistration.helper.MessageBuilder;
 import ai.inmind.universityregistration.model.DTO.StudentDTO;
 import ai.inmind.universityregistration.model.Student;
 import ai.inmind.universityregistration.service.impl.StudentEnrollmentService;
@@ -28,7 +29,7 @@ public class StudentController {
         this.studentEnrollmentService = studentEnrollmentService;
     }
 
-    @ExceptionHandler(value = RuntimeException.class)
+    @ExceptionHandler({CannotEnrollException.class, CannotDropException.class})
     public ResponseEntity<String> handleRuntimeException(RuntimeException runtimeException) {
         return new ResponseEntity<>(runtimeException.getMessage(), HttpStatus.BAD_REQUEST);
     }
@@ -64,7 +65,7 @@ public class StudentController {
     public ResponseEntity<String> deleteStudent(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id) {
         LocaleParam.setLocale(locale);
         studentService.deleteElement(id);
-        return new ResponseEntity<>(MessageBuilder.messageBuilder("student", "deleteMessage"), HttpStatus.OK);
+        return new ResponseEntity<>(LocaleParam.getMessage("student") + " " + LocaleParam.getMessage("deleteMessage"), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Enroll a specific Student into a specific Class")

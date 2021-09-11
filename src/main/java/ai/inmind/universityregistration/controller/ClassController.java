@@ -2,7 +2,6 @@ package ai.inmind.universityregistration.controller;
 
 import ai.inmind.universityregistration.configuration.SwaggerConfig;
 import ai.inmind.universityregistration.helper.LocaleParam;
-import ai.inmind.universityregistration.helper.MessageBuilder;
 import ai.inmind.universityregistration.model.Class;
 import ai.inmind.universityregistration.model.DTO.ClassDTO;
 import ai.inmind.universityregistration.service.impl.ClassServiceImpl;
@@ -56,6 +55,6 @@ public class ClassController {
     public ResponseEntity<String> deleteClass(@RequestHeader("Accept-Language") String locale, @PathVariable("id") long id) {
         classService.deleteElement(id);
         LocaleParam.setLocale(locale);
-        return new ResponseEntity<>(MessageBuilder.messageBuilder("class", "deleteMessage"), HttpStatus.OK);
+        return new ResponseEntity<>(LocaleParam.getMessage("class") + " " + LocaleParam.getMessage("deleteMessage"), HttpStatus.OK);
     }
 }

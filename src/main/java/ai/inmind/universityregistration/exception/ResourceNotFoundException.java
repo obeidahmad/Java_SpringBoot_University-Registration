@@ -1,6 +1,5 @@
 package ai.inmind.universityregistration.exception;
 
-import ai.inmind.universityregistration.configuration.LocalizationConfig;
 import ai.inmind.universityregistration.helper.LocaleParam;
 import lombok.Getter;
 
@@ -10,14 +9,7 @@ public class ResourceNotFoundException extends RuntimeException {
     private final String message;
 
     public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
-        super(String.format(LocalizationConfig.messageSource().getMessage("resourceNotFound",null, LocaleParam.getLocale()),
-                LocalizationConfig.messageSource().getMessage(resourceName,null, LocaleParam.getLocale()),
-                LocalizationConfig.messageSource().getMessage(fieldName,null, LocaleParam.getLocale()),
-                fieldValue));
-
-        this.message = String.format(LocalizationConfig.messageSource().getMessage("resourceNotFound",null, LocaleParam.getLocale()),
-                LocalizationConfig.messageSource().getMessage(resourceName,null, LocaleParam.getLocale()),
-                LocalizationConfig.messageSource().getMessage(fieldName,null, LocaleParam.getLocale()),
-                fieldValue);
+        super(String.format(LocaleParam.getMessage("resourceNotFound"), LocaleParam.getMessage(resourceName), LocaleParam.getMessage(fieldName), fieldValue));
+        this.message = String.format(LocaleParam.getMessage("resourceNotFound"), LocaleParam.getMessage(resourceName), LocaleParam.getMessage(fieldName), fieldValue);
     }
 }

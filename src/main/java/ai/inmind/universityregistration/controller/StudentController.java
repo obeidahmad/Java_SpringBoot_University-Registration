@@ -1,7 +1,6 @@
 package ai.inmind.universityregistration.controller;
 
 import ai.inmind.universityregistration.configuration.SwaggerConfig;
-import ai.inmind.universityregistration.exception.CannotEnrollException;
 import ai.inmind.universityregistration.helper.LocaleParam;
 import ai.inmind.universityregistration.helper.MessageBuilder;
 import ai.inmind.universityregistration.model.DTO.StudentDTO;
@@ -29,9 +28,9 @@ public class StudentController {
         this.studentEnrollmentService = studentEnrollmentService;
     }
 
-    @ExceptionHandler(value = CannotEnrollException.class)
-    public ResponseEntity<String> handleCannotEnrollException(CannotEnrollException cannotEnrollException) {
-        return new ResponseEntity<>(cannotEnrollException.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(value = RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException runtimeException) {
+        return new ResponseEntity<>(runtimeException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "Add a new Student")
@@ -73,5 +72,12 @@ public class StudentController {
     public ResponseEntity<StudentDTO> enrollStudent(@RequestHeader("Accept-Language") String locale, @RequestParam(name = "studentId") long studentId, @RequestParam(name = "classId") long classId) {
         LocaleParam.setLocale(locale);
         return new ResponseEntity<>(new StudentDTO(studentEnrollmentService.enrollInClass(studentId, classId)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Remove a specific Student from a specific Class")
+    @PutMapping("drop")
+    public ResponseEntity<StudentDTO> dropStudent(@RequestHeader("Accept-Language") String locale, @RequestParam(name = "studentId") long studentId, @RequestParam(name = "classId") long classId) {
+        LocaleParam.setLocale(locale);
+        return new ResponseEntity<>(new StudentDTO(studentEnrollmentService.dropClass(studentId, classId)), HttpStatus.OK);
     }
 }
